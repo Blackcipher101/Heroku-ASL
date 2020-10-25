@@ -5,17 +5,23 @@ import numpy as np
 model = tf.keras.models.load_model('model/my_model.h5')
 def predictor(data):
     global model
-    print(data)
     im_bytes = base64.b64decode(data)
     im_arr = np.frombuffer(im_bytes, dtype=np.uint8)  # im_arr is one-dim Numpy array
     img = cv2.imdecode(im_arr, flags=cv2.IMREAD_COLOR)
-    print(img)
-    im=cv2.resize(img,(64,64))
+    img= cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    adddark = np.zeros(img.shape, np.uint8)
+    alpha=0.3
+    beta = (1.0 - alpha)
+    dst = cv2.addWeighted(img, alpha,adddark,beta, 0.0)
+    clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(8,8))
+    dst = clahe.apply(dst)
+    im=cv2.resize(dst,(128,128))
 
 
 
-    
+
     batch = np.expand_dims(im,axis=0)
+    batch = np.expand_dims(batch,axis=3)
 
 
 
