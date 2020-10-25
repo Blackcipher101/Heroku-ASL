@@ -8,6 +8,4 @@ Pillow==7.2.0
 python-debian==0.1.32
 requests==2.24.0
 requests-oauthlib==1.3.0
-requests-unixsocket==0.1.5
-resource-retriever==1.12.6
 tensorflow==2.3.1
